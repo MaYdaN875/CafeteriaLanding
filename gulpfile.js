@@ -1,14 +1,31 @@
-const { src, dest } = require('gulp');
+const { src, dest,watch, series } = require('gulp');
+
 const sass = require('gulp-sass')(require('sass'));
+const postcss = require('gulp-postcss');
+const autoprefixer = require('autoprefixer');
+
+//const imagemin = require('gulp-imagemin');
 
 function css( done){
 
     src('src/scss/app.scss')
-        .pipe( sass() )
+        .pipe( sass({outputStyle: 'compressed'}) )
+        .pipe( postcss([autoprefixer()]) )
         .pipe(dest('build/css'));
     
     done();
 }
 
-exports.css = css;
+function dev(  ){
+    watch('src/scss/**/*.scss', css);
+    watch('src/scss/app.scss', css);
+    
+}
 
+
+
+
+exports.css = css;
+exports.dev = dev;
+
+exports.default = series( css, dev );

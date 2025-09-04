@@ -1,8 +1,4 @@
-$color : blue;
+@use 'base';
+@use 'header';
 
-body{
-
-    background-color: $color;
-    
-}
 
